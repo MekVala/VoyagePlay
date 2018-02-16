@@ -40,6 +40,8 @@ public class PlayerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
+        getSupportActionBar().hide();
+
         btnPlayPause = findViewById(R.id.btnPlayPause);
         btnPrevious = findViewById(R.id.btnPrevious);
         btnNext = findViewById(R.id.btnNext);
@@ -146,6 +148,7 @@ public class PlayerActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             progressDialog.dismiss();
+            mService.createNotification();
             int totDuration = intent.getIntExtra("Duration",50000);
             seekMusic.setMax(totDuration);
             setTotalDurationText(totDuration);
@@ -177,6 +180,12 @@ public class PlayerActivity extends AppCompatActivity {
             unbindService(serviceConnection);
             mServiceBound = false;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopService(iService);
     }
 
     protected void registerBroadcast(){
@@ -216,7 +225,6 @@ public class PlayerActivity extends AppCompatActivity {
 
     public void setSongControls(){
         if(song!=null){
-            //getActionBar().setTitle(song.getSong_title());
             Picasso.with(getApplicationContext()).load(song.getAlbum_art_url()).into(albumArt);
         }
     }

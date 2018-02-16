@@ -94,6 +94,12 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopService(iService);
+    }
+
     private void initView(){
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.musicList);
         recyclerView.setHasFixedSize(true);

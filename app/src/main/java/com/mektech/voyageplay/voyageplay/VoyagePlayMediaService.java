@@ -15,6 +15,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -25,7 +26,7 @@ public class VoyagePlayMediaService extends Service {
     private int length = 0;
     private ArrayList songList;
     private SongInfo song;
-    private int currentSong;
+    private int currentSong = 0;
 
     public VoyagePlayMediaService() {
     }
@@ -38,7 +39,6 @@ public class VoyagePlayMediaService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        createNotification();
         return START_STICKY;
     }
 
@@ -51,6 +51,9 @@ public class VoyagePlayMediaService extends Service {
         mediaPlayer.stop();
         mediaPlayer.release();
         mediaPlayer = null;
+        Toast.makeText(getApplicationContext(),"Service Destroy Called",Toast.LENGTH_SHORT).show();
+        NotificationManager nm = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        nm.cancel(0);
     }
 
     public void play(){
@@ -124,6 +127,7 @@ public class VoyagePlayMediaService extends Service {
     }
 
     public void setCurrentSong(int position){
+        currentSong = position;
         song = (SongInfo) songList.get(position);
         setSourceMusic(song.getUrl());
     }
@@ -174,7 +178,8 @@ public class VoyagePlayMediaService extends Service {
 
         Notification n = builder.build();
         //n.flags |= Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager;
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(0,n);
     }
 
@@ -187,7 +192,6 @@ public class VoyagePlayMediaService extends Service {
         Intent intent = new Intent(getApplicationContext(),NotificationBroadcastReciver.class);
         intent.setAction("PLAY_NOTIF");
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),7,intent,0);
-
         notificationView.setOnClickPendingIntent(R.id.btnPlayNotif,pendingIntent);
 
         return notificationView;
