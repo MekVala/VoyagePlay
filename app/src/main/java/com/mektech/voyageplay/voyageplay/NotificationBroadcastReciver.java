@@ -1,29 +1,31 @@
 package com.mektech.voyageplay.voyageplay;
 
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
-import android.widget.Toast;
 
 /**
- * Created by mek on 2/3/18.
+ * Created by mek on 2/16/18.
  */
 
 public class NotificationBroadcastReciver extends BroadcastReceiver {
-
-    VoyagePlayMediaService mService;
-    Boolean mServiceBound = false;
-    Intent iService;
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
         if(intent.getAction().toString().equals("PLAY_NOTIF")) {
-
+            Intent iPlay = new Intent(context,VoyagePlayMediaService.class);
+            iPlay.putExtra("action","PLAY_NOTIF");
+            context.startService(iPlay);
+        }
+        else if(intent.getAction().toString().equals("PREV_NOTIF")) {
+            Intent iPlay = new Intent(context,VoyagePlayMediaService.class);
+            iPlay.putExtra("action","PREV_NOTIF");
+            context.startService(iPlay);
+        }else if(intent.getAction().toString().equals("NEXT_NOTIF")) {
+            Intent iPlay = new Intent(context,VoyagePlayMediaService.class);
+            iPlay.putExtra("action","NEXT_NOTIF");
+            context.startService(iPlay);
         }
     }
-
 }

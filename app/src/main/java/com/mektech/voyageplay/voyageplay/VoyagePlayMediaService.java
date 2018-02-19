@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 public class VoyagePlayMediaService extends Service {
 
     private IBinder mBinder = new MyBinder();
-    private MediaPlayer mediaPlayer;
+    private static MediaPlayer mediaPlayer;
     private int length = 0;
     private ArrayList songList;
     private SongInfo song;
@@ -39,6 +40,19 @@ public class VoyagePlayMediaService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        String action = intent.getStringExtra("action");
+        if(action!= null && action.equals("PLAY_NOTIF")){
+            if(mediaPlayer.isPlaying()){
+                pause();
+            }else if(!mediaPlayer.isPlaying()){
+                play();
+            }
+        }else if(action!=null && action.equals("PREV_NOTIF")){
+            previous();
+        }else if(action !=null && action.equals("NEXT_NOTIF")){
+            next();
+        }
         return START_STICKY;
     }
 
@@ -51,7 +65,7 @@ public class VoyagePlayMediaService extends Service {
         mediaPlayer.stop();
         mediaPlayer.release();
         mediaPlayer = null;
-        Toast.makeText(getApplicationContext(),"Service Destroy Called",Toast.LENGTH_SHORT).show();
+
         NotificationManager nm = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
         nm.cancel(0);
     }
@@ -189,10 +203,23 @@ public class VoyagePlayMediaService extends Service {
                 R.layout.player_notification
         );
 
-        Intent intent = new Intent(getApplicationContext(),NotificationBroadcastReciver.class);
-        intent.setAction("PLAY_NOTIF");
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),7,intent,0);
-        notificationView.setOnClickPendingIntent(R.id.btnPlayNotif,pendingIntent);
+        Intent iPlay = new Intent(getApplicationContext(),NotificationBroadcastReciver.class);
+        iPlay.setAction("PLAY_NOTIF");
+        PendingIntent playpendingIntent = PendingIntent.getBroadcast(getApplicationContext(),7,iPlay,0);
+        notificationView.setOnClickPendingIntent(R.id.btnPlayNotif,playpendingIntent);
+
+        Intent iPrev = new Intent(getApplicationContext(),NotificationBroadcastReciver.class);
+        iPlay.setAction("PREV_NOTIF");
+        PendingIntent prevpendingIntent = PendingIntent.getBroadcast(getApplicationContext(),7,iPrev,0);
+        notificationView.setOnClickPendingIntent(R.id.btnPrevNotif,prevpendingIntent);
+
+        Intent iNext = new Intent(getApplicationContext(),NotificationBroadcastReciver.class);
+        iPlay.setAction("NEXT_NOTIF");
+        PendingIntent nextpendingIntent = PendingIntent.getBroadcast(getApplicationContext(),7,iNext,0);
+        notificationView.setOnClickPendingIntent(R.id.btnNextNotif,nextpendingIntent);
+
+
+
 
         return notificationView;
     }
@@ -263,4 +290,5 @@ public class VoyagePlayMediaService extends Service {
         loadingIntent.putExtra("Duration",mediaPlayer.getDuration());
         LocalBroadcastManager.getInstance(context).sendBroadcast(loadingIntent);
     }
+
 }

@@ -25,8 +25,7 @@
             android:exported="true" />
 
         <activity android:name=".PlayerActivity"></activity>
-
-        <receiver android:name=".NotificationBroadcastReciver"/>
+        <receiver android:name=".NotificationBroadcastReciver" android:enabled="true"></receiver>
     </application>
 
 </manifest>
