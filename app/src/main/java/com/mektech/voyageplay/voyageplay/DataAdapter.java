@@ -36,7 +36,8 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     public void onBindViewHolder(DataAdapter.ViewHolder holder, int position) {
         holder.s_title.setText(songInfos.get(position).getSong_title());
         holder.s_album.setText(songInfos.get(position).getSong_album());
-        Picasso.with(context).load(songInfos.get(position).getAlbum_art_url()).resize(60,60).into(holder.img_album);
+        Picasso.with(context).load(songInfos.get(position).getAlbum_art_url())
+                    .resize(60,60).into(holder.img_album);
     }
 
     @Override
