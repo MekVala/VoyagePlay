@@ -28,7 +28,7 @@ public class PlayerActivity extends AppCompatActivity {
 
     Button btnPlayPause,btnPrevious,btnNext;
     ImageView albumArt;
-    TextView curTime,totTime;
+    TextView curTime,totTime,hTitle,hAlbum;
     SeekBar seekMusic;
     VoyagePlayMediaService mService;
     Boolean mServiceBound = false;
@@ -49,6 +49,8 @@ public class PlayerActivity extends AppCompatActivity {
         totTime = findViewById(R.id.textTotalDuration);
         seekMusic = findViewById(R.id.seekMusicProgress);
         albumArt = findViewById(R.id.albumArt);
+        hTitle = findViewById(R.id.head_title_name);
+        hAlbum = findViewById(R.id.head_album_name);
         initializeProgressDialog();
 
         iService = new Intent(getApplicationContext(),VoyagePlayMediaService.class);
@@ -225,6 +227,8 @@ public class PlayerActivity extends AppCompatActivity {
 
     public void setSongControls(){
         if(song!=null){
+            hTitle.setText(song.getSong_title());
+            hAlbum.setText(song.getSong_album());
             Picasso.with(getApplicationContext()).load(song.getAlbum_art_url()).into(albumArt);
         }
     }

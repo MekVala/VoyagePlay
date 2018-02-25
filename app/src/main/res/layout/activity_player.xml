@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:gravity="center"
@@ -7,69 +7,90 @@
     android:layout_height="match_parent"
     tools:context="com.mektech.voyageplay.voyageplay.PlayerActivity">
 
+    <LinearLayout
+        android:id="@+id/song_detail_head"
+        android:layout_width="match_parent"
+        android:padding="5dp"
+        android:orientation="vertical"
+        android:background="@color/colorPrimary"
+        android:layout_height="60dp">
+        <TextView
+            android:id="@+id/head_title_name"
+            android:textSize="18dp"
+            android:textColor="#FFF"
+            android:text="Sample Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/head_album_name"
+            android:text="album"
+            android:textSize="12dp"
+            android:textColor="#FFF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
     <ImageView
         android:id="@+id/albumArt"
-        android:layout_weight="3"
-        android:layout_width="200dp"
-        android:contentDescription="Music art"
-        android:src="@mipmap/ic_launcher"
-        android:layout_height="200dp" />
-
-    <SeekBar
-        android:id="@+id/seekMusicProgress"
+        android:scaleType="centerCrop"
+        android:layout_below="@id/song_detail_head"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:progressTint="@color/colorPrimaryDark"
-        android:secondaryProgressTint="@color/colorPrimary"
-        android:thumbTint="#ff0000"
-        android:visibility="visible" />
-
+        android:layout_height="match_parent" />
     <LinearLayout
+        android:background="@color/colorPrimary"
+        android:layout_above="@id/duration_wrap"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:gravity="center"
+        android:layout_height="20dp">
+        <SeekBar
+            android:id="@+id/seekMusicProgress"
+            android:backgroundTint="#FFF"
+            android:thumbTint="#FFF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <RelativeLayout
+        android:background="@color/colorPrimary"
+        android:id="@+id/duration_wrap"
+        android:layout_above="@id/controls_wrap"
+        android:layout_width="match_parent"
+        android:padding="5dp"
         android:layout_height="wrap_content">
         <TextView
             android:text="00:00"
+            android:textColor="#FFF"
+            android:layout_gravity="start"
             android:id="@+id/txtCurDuration"
             android:layout_width="wrap_content"
-            android:layout_marginRight="2.5dp"
             android:layout_height="wrap_content" />
         <TextView
-            android:layout_width="wrap_content"
-            android:text="|"
-            android:layout_height="wrap_content" />
-        <TextView
+            android:text="00:00"
+            android:textColor="#FFF"
             android:id="@+id/textTotalDuration"
+            android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="2.5dp"
-            android:text="00:00" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="horizontal">
 
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/controls_wrap"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:layout_alignParentBottom="true">
         <Button
             android:id="@+id/btnPrevious"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
             android:background="@drawable/ic_skip_previous_black_24dp"
-            tools:ignore="ButtonStyle" />
-
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
         <Button
             android:id="@+id/btnPlayPause"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:background="@drawable/ic_pause_circle_outline_black_24dp" />
-
+            android:background="@drawable/ic_play_circle_outline_black_24dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
         <Button
             android:id="@+id/btnNext"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:background="@drawable/ic_skip_next_black_24dp" />
+            android:background="@drawable/ic_skip_next_black_24dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>
