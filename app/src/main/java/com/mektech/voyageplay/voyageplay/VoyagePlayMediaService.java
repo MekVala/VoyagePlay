@@ -16,6 +16,8 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 
 public class VoyagePlayMediaService extends Service {
@@ -55,7 +57,9 @@ public class VoyagePlayMediaService extends Service {
     }
 
     @Override
-    public IBinder onBind(Intent intent) {return mBinder;}
+    public IBinder onBind(Intent intent) {
+        Toast.makeText(getApplicationContext(),"ON BIND",Toast.LENGTH_SHORT).show();
+        return mBinder;}
 
     @Override
     public void onDestroy() {

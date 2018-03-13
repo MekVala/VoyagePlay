@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
@@ -27,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 public class PlayerActivity extends AppCompatActivity {
 
     Button btnPlayPause,btnPrevious,btnNext;
-    ImageView albumArt;
+    ImageView albumArt,albumArtTop;
     TextView curTime,totTime,hTitle,hAlbum;
     SeekBar seekMusic;
     VoyagePlayMediaService mService;
@@ -51,7 +53,11 @@ public class PlayerActivity extends AppCompatActivity {
         albumArt = findViewById(R.id.albumArt);
         hTitle = findViewById(R.id.head_title_name);
         hAlbum = findViewById(R.id.head_album_name);
+        albumArtTop = findViewById(R.id.albumArtTop);
         initializeProgressDialog();
+
+        seekMusic.getProgressDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
+        seekMusic.getThumb().setColorFilter(Color.RED,PorterDuff.Mode.SRC_IN);
 
         iService = new Intent(getApplicationContext(),VoyagePlayMediaService.class);
         bindService(iService,serviceConnection, Context.BIND_AUTO_CREATE);
@@ -62,10 +68,10 @@ public class PlayerActivity extends AppCompatActivity {
                 if(mServiceBound){
                     if(!mService.isPlaying()){
                         mService.play();
-                        btnPlayPause.setBackgroundResource(R.drawable.ic_pause_circle_outline_black_24dp);
+                        btnPlayPause.setBackgroundResource(R.drawable.ic_pause_circle_filled_white_48px);
                     }else if(mService.isPlaying()){
                         mService.pause();
-                        btnPlayPause.setBackgroundResource(R.drawable.ic_play_circle_outline_black_24dp);
+                        btnPlayPause.setBackgroundResource(R.drawable.ic_play_circle_filled_white_48px);
                     }
                 }
             }
@@ -229,6 +235,7 @@ public class PlayerActivity extends AppCompatActivity {
         if(song!=null){
             hTitle.setText(song.getSong_title());
             hAlbum.setText(song.getSong_album());
+            Picasso.with(getApplicationContext()).load(song.getAlbum_art_url()).into(albumArtTop);
             Picasso.with(getApplicationContext()).load(song.getAlbum_art_url()).into(albumArt);
         }
     }
