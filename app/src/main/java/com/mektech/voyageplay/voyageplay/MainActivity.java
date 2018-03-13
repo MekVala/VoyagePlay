@@ -88,10 +88,10 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onStop() {
         super.onStop();
-        if(mServiceBound){
+        /*if(mServiceBound){
             unbindService(serviceConnection);
             mServiceBound = false;
-        }
+        }*/
     }
 
     @Override

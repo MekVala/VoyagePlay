@@ -58,8 +58,12 @@ public class VoyagePlayMediaService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        Toast.makeText(getApplicationContext(),"ON BIND",Toast.LENGTH_SHORT).show();
         return mBinder;}
+
+    @Override
+    public void onRebind(Intent intent) {
+        super.onRebind(intent);
+    }
 
     @Override
     public void onDestroy() {
@@ -211,12 +215,12 @@ public class VoyagePlayMediaService extends Service {
         notificationView.setOnClickPendingIntent(R.id.btnPlayNotif,playpendingIntent);
 
         Intent iPrev = new Intent(getApplicationContext(),NotificationBroadcastReciver.class);
-        iPlay.setAction("PREV_NOTIF");
+        iPrev.setAction("PREV_NOTIF");
         PendingIntent prevpendingIntent = PendingIntent.getBroadcast(getApplicationContext(),7,iPrev,0);
         notificationView.setOnClickPendingIntent(R.id.btnPrevNotif,prevpendingIntent);
 
         Intent iNext = new Intent(getApplicationContext(),NotificationBroadcastReciver.class);
-        iPlay.setAction("NEXT_NOTIF");
+        iNext.setAction("NEXT_NOTIF");
         PendingIntent nextpendingIntent = PendingIntent.getBroadcast(getApplicationContext(),7,iNext,0);
         notificationView.setOnClickPendingIntent(R.id.btnNextNotif,nextpendingIntent);
 
@@ -292,5 +296,4 @@ public class VoyagePlayMediaService extends Service {
         loadingIntent.putExtra("Duration",mediaPlayer.getDuration());
         LocalBroadcastManager.getInstance(context).sendBroadcast(loadingIntent);
     }
-
 }

@@ -54,7 +54,6 @@ public class PlayerActivity extends AppCompatActivity {
         hTitle = findViewById(R.id.head_title_name);
         hAlbum = findViewById(R.id.head_album_name);
         albumArtTop = findViewById(R.id.albumArtTop);
-        initializeProgressDialog();
 
         seekMusic.getProgressDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
         seekMusic.getThumb().setColorFilter(Color.RED,PorterDuff.Mode.SRC_IN);
@@ -127,6 +126,16 @@ public class PlayerActivity extends AppCompatActivity {
             VoyagePlayMediaService.MyBinder binder = (VoyagePlayMediaService.MyBinder)service;
             mService = binder.getService();
             mServiceBound = true;
+            if(mService != null){
+                if(mService.isPlaying()){
+                    seekMusic.setMax(mService.getDuration());
+                    setTotalDurationText(mService.getDuration());
+                    song = mService.getCurrentSong();
+                    setSongControls();
+                }else if(!mService.isPlaying()){
+                    initializeProgressDialog();
+                }
+            }
         }
 
         @Override
@@ -238,5 +247,12 @@ public class PlayerActivity extends AppCompatActivity {
             Picasso.with(getApplicationContext()).load(song.getAlbum_art_url()).into(albumArtTop);
             Picasso.with(getApplicationContext()).load(song.getAlbum_art_url()).into(albumArt);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent goMain = new Intent(getApplicationContext(),MainActivity.class);
+        startActivity(goMain);
     }
 }
